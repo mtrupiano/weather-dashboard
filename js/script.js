@@ -73,6 +73,13 @@ $(document).ready(function() {
         var windSpeed = response.wind.speed;
         var uvIndex;
 
+        // var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
+
+        $("#weather-icon-main").attr("src", pickIcon(response.weather[0].icon));
+        $("#weather-icon-main").attr("height", "200");
+        $("#weather-icon-main").attr("width", "200");
+
+
         $("#city-name-header").text(response.name);
         $("#temp").text(temp + "degF");
         $("#humidity").text(humidity + "%");
@@ -84,6 +91,49 @@ $(document).ready(function() {
         var listItems = $("#search-history-list").children();
         for (var i = 0; i < listItems.length; i++) {
             $(listItems[i]).removeClass("active");
+        }
+    }
+
+    // Return URL for an icon based on OpenWeatherMap API's condition code
+    function pickIcon(code) {
+        var URLbase = "https://raw.githubusercontent.com/erikflowers/weather-icons/54113376d944f6735054ef3b38dcee755471f1b9/svg/";
+        switch (code) {
+            case "01d": // clear, day
+                return URLbase + "wi-day-sunny.svg";
+            case "01n": // clear, night
+                return URLbase + "wi-moon-alt-waxing-crescent-2.svg";
+            case "02d": // few clouds, day
+                return URLbase + "wi-day-cloudy.svg";
+            case "02n": // few clouds, night
+                return URLbase + "wi-night-alt-cloudy.svg";
+            case "03d": // scattered clouds
+                return URLbase + "wi-cloud.svg";
+            case "03n": // scattered clouds
+                return URLbase + "wi-cloud.svg";
+            case "04d": // broken clouds
+                return URLbase + "wi-cloudy.svg";
+            case "04n": // broken clouds
+                return URLbase + "wi-cloudy.svg";
+            case "09d": // shower rain
+                return URLbase + "wi-day-showers.svg";
+            case "09n": // shower rain, night
+                return URLbase + "wi-night-showers.svg";
+            case "10d": // rain
+                return URLbase + "wi-day-rain.svg";
+            case "10n": // rain, night
+                return URLbase + "wi-night-rain.svg";
+            case "11d": // thunderstorm
+                return URLbase + "wi-day-thunderstorm.svg";
+            case "11n": // thunderstorm, night
+                return URLbase + "wi-night-thunderstorm.svg";
+            case "13d": // snow
+                return URLbase + "wi-day-snow.svg";
+            case "13n": // snow
+                return URLbase + "wi-night-snow.svg";
+            case "50d": // mist
+                return URLbase + "wi-day-fog.svg";
+            case "50n": // mist, night
+                return URLbase + "wi-night-fog.svg";
         }
     }
 });
