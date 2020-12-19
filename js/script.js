@@ -21,11 +21,12 @@ $(document).ready(function() {
         }
     }
 
-
+    // Event listener for the search button
     $("#search-btn").click(function(event) {
         event.preventDefault();
         
         var query = $("#search-field").val();
+        $("#search-field").val("");
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + query + 
             "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
         
@@ -47,6 +48,7 @@ $(document).ready(function() {
     
     });
 
+    // Event listener for selecting a location from the saved searches list
     $(document).on("click", ".list-group-item", function(event) {
         event.preventDefault();
 
@@ -65,6 +67,7 @@ $(document).ready(function() {
         });
     });
 
+    // Utility function to load data from an API response into the appropriate fields on the page
     function loadWeatherData(response) {
         var temp = response.main.temp;
         var humidity = response.main.humidity;
