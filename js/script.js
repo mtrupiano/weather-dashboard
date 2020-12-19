@@ -71,6 +71,7 @@ $(document).ready(function() {
         var windSpeed = response.wind.speed;
         var uvIndex;
 
+        $("#city-name-header").text(response.name);
         $("#temp").text(temp + "degF");
         $("#humidity").text(humidity + "%");
         $("#wind-speed").text(windSpeed + " mph");
