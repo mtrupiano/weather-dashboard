@@ -86,6 +86,31 @@ $(document).ready(function() {
             $("#humidity").text(humidity + "%");
             $("#wind-speed").text(windSpeed + " mph");
         });
+
+        var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + clickedCity +
+            "&units=imperial&appid=4123b80b67c88531547b1bdd29d80fd3";
+
+        $.ajax({url: forecastURL, method: "GET"}).then(function(response) {
+
+            for (var i = 0; i < 5; i++) {
+                var temp = response.list[i].main.temp;
+                var humidity = response.list[i].main.humidity;
+                var iconCode = response.list[i].weather[0].icon;
+
+                var card = $(`div[data-idx=${i}]`);
+                var cardTitle = card.find(".card-title");
+                var cardIcon = card.find(".card-icon");
+                var cardTemp = card.find(".card-temp");
+                var cardHumid = card.find(".card-humid");
+                cardTitle.text("");
+                cardIcon.attr("src", pickIcon(iconCode));
+                cardIcon.attr("height", 50);
+                cardIcon.attr("width", 50);
+                cardTemp.text(`Temp: ${temp}`);
+                cardHumid.text(`Humidity: ${humidity}`);
+            }
+
+        });
         
     }
 

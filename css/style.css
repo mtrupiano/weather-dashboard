@@ -4,6 +4,11 @@ header {
     height: 120px;
 }
 
+.card-body div {
+    padding: 3px 0;
+    font-size: 11pt;
+}
+
 #search-btn {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -19,4 +24,8 @@ header {
 
 #detail-view div {
     padding: 3px 0;
+}
+
+#forecast-view .col {
+    padding: 0 7px;
 }
