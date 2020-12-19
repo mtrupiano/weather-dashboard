@@ -26,24 +26,20 @@ $(document).ready(function() {
         event.preventDefault();
         
         var query = $("#search-field").val();
-        $("#search-field").val("");
-        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + query + 
-            "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
+        loadWeatherData(query);
+
+        var capitalizedCityName = query[0].toUpperCase();
+        capitalizedCityName += query.substring(1, query.length);
+        savedCities.push(capitalizedCityName);
+        localStorage.setItem("savedCities", JSON.stringify(savedCities))
+
+        // Add new searched city to list group
+        var newListItem = $("<li>").text(capitalizedCityName);
+        markAllInactive();
+        newListItem.addClass("list-group-item active");
+        $("#search-history-list").prepend(newListItem);
         
-        $.ajax({url: queryURL, method: "GET"}).then(function(response) {
-            // Add new searched city to list in local storage
-            savedCities.push(response.name);
-            localStorage.setItem("savedCities", JSON.stringify(savedCities));
-
-            // Add new searched city to list group
-            var newListItem = $("<li>").text(response.name);
-            markAllInactive();
-            newListItem.addClass("list-group-item active");
-            $("#search-history-list").prepend(newListItem);
-            loadWeatherData(response);
-
-            console.log(response);
-        });
+        $("#search-field").val(""); // Empty search field
 
     });
 
@@ -55,35 +51,42 @@ $(document).ready(function() {
         var target = $(event.target);
         markAllInactive();
         target.addClass("active");
-        var clickedCity = target.text();
-
-        // Get weather data and load it to the appropriate fields
-        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + clickedCity +
-            "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
-        $.ajax({ url: queryURL, method: "GET" }).then(function (response) {
-            console.log(response);
-            loadWeatherData(response);
-        });
+        loadWeatherData(target.text());
     });
 
-    // Utility function to load data from an API response into the appropriate fields on the page
-    function loadWeatherData(response) {
-        var temp = response.main.temp;
-        var humidity = response.main.humidity;
-        var windSpeed = response.wind.speed;
-        var uvIndex;
+    // Utility function to submit API requests for all data to populate page
+    function loadWeatherData(clickedCity) {
 
-        // var iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
+        var todaysWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + clickedCity +
+            "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
 
-        $("#weather-icon-main").attr("src", pickIcon(response.weather[0].icon));
-        $("#weather-icon-main").attr("height", "200");
-        $("#weather-icon-main").attr("width", "200");
+        $.ajax({ url: todaysWeatherURL, method: "GET" }).then(function (response) {
 
+            var temp = response.main.temp;
+            var humidity = response.main.humidity;
+            var windSpeed = response.wind.speed;
 
-        $("#city-name-header").text(response.name);
-        $("#temp").text(temp + "degF");
-        $("#humidity").text(humidity + "%");
-        $("#wind-speed").text(windSpeed + " mph");
+            // Submit a second API request for UV index data
+            var uvIndexURL =
+                "http://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat +
+                "&lon=" + response.coord.lon +
+                "&appid=4123b80b67c88531547b1bdd29d80fd3";
+
+            $.ajax({ url: uvIndexURL, method: "GET"}).then(function(response) {
+                $("#uv-idx").text(response.value);
+            });
+
+            // Populate response data in respective fields
+            $("#weather-icon-main").attr("src", pickIcon(response.weather[0].icon));
+            $("#weather-icon-main").attr("height", "200");
+            $("#weather-icon-main").attr("width", "200");
+
+            $("#city-name-header").text(response.name);
+            $("#temp").text(temp + "degF");
+            $("#humidity").text(humidity + "%");
+            $("#wind-speed").text(windSpeed + " mph");
+        });
+        
     }
 
     // Removes 'active' class from all items in saved search list
