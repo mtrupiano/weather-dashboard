@@ -45,7 +45,6 @@ $(document).ready(function() {
             console.log(response);
         });
 
-    
     });
 
     // Event listener for selecting a location from the saved searches list

@@ -1,7 +1,3 @@
-html {
-    color: rgb(54, 54, 54);
-}
-
 header {
     background-color: black;
     color: white;
@@ -17,5 +13,6 @@ header {
     border: solid;
     border-width: 1px;
     border-radius: 2px;
+    border-color: rgba(0, 0, 0, 0.125);
     min-height: 200px;
 }
