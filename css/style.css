@@ -1,5 +1,21 @@
+html {
+    color: rgb(54, 54, 54);
+}
+
 header {
     background-color: black;
     color: white;
     height: 120px;
+}
+
+#search-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+#detail-view {
+    border: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    min-height: 200px;
 }

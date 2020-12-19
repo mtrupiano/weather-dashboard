@@ -11,9 +11,47 @@
         <link rel="stylesheet" href="./css/style.css">
     </head>
     <body>
-        <header>
+        <header class="mb-3">
             <h1 class="display-3 text-center">WeatherPane</h1>
         </header>
+
+        <main class="container">
+            <div class="row">
+                <div class="col-4">
+                    <!-- Search bar -->
+                    <div class="row">
+                        <div class="col input-group">
+                            <input class="form-control" type="text" placeholder="Search">
+                            <button class="btn" id="search-btn">Search</button>
+                        </div>
+                    </div>
+
+                    <!-- Search history list -->
+                    <div class="row">
+                        <div class="col" id="search-history-container">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8">
+                    <!-- Main detail view -->
+                    <div class="row">
+                        <div class="col" id="detail-view">
+                            <h1>Select a city</h1>
+                        </div>
+                    </div>
+                    <!-- 5-day view -->
+                    <div class="row">
+                        <div class="col">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
