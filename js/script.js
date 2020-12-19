@@ -10,6 +10,7 @@ $(document).ready(function() {
 
     renderSavedCities();
 
+    // Draw list of saved cities below search bar
     function renderSavedCities() {
         if (savedCities.length === 0) { return; }
 
@@ -26,7 +27,12 @@ $(document).ready(function() {
         event.preventDefault();
         
         var query = $("#search-field").val();
-        loadWeatherData(query);
+
+        var validCity = loadWeatherData(query);
+        if (!validCity) { 
+            return;
+        }
+        
 
         var capitalizedCityName = query[0].toUpperCase();
         capitalizedCityName += query.substring(1, query.length);
@@ -59,10 +65,17 @@ $(document).ready(function() {
 
         var todaysWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + clickedCity +
             "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
-
-        $.ajax({ url: todaysWeatherURL, method: "GET" }).then(function (response) {
-
-            var temp = response.main.temp;
+        var success;
+        $.ajax({ 
+            url: todaysWeatherURL, 
+            method: "GET",
+            error: function(ajaxContext) {
+                console.log("Invalid city identifier: " + clickedCity);
+                success = false;
+            }
+        }).then(function (response) {
+            success = true;
+            var temp = Math.round(parseFloat(response.main.temp) * 10) / 10;
             var humidity = response.main.humidity;
             var windSpeed = response.wind.speed;
 
@@ -82,7 +95,7 @@ $(document).ready(function() {
             $("#weather-icon-main").attr("width", "200");
 
             $("#city-name-header").text(response.name);
-            $("#temp").text(temp + "degF");
+            $("#temp").html(temp + "&deg;F");
             $("#humidity").text(humidity + "%");
             $("#wind-speed").text(windSpeed + " mph");
         });
@@ -93,7 +106,7 @@ $(document).ready(function() {
         $.ajax({url: forecastURL, method: "GET"}).then(function(response) {
 
             for (var i = 0; i < 5; i++) {
-                var temp = response.list[i].main.temp;
+                var temp = Math.round(parseFloat(response.list[i].main.temp) * 10) / 10;
                 var humidity = response.list[i].main.humidity;
                 var iconCode = response.list[i].weather[0].icon;
 
@@ -106,12 +119,13 @@ $(document).ready(function() {
                 cardIcon.attr("src", pickIcon(iconCode));
                 cardIcon.attr("height", 50);
                 cardIcon.attr("width", 50);
-                cardTemp.text(`Temp: ${temp}`);
-                cardHumid.text(`Humidity: ${humidity}`);
+                cardTemp.html(`Temp: ${temp}&deg;F`);
+                cardHumid.text(`Humidity: ${humidity}%`);
             }
 
         });
         
+        return success;
     }
 
     // Removes 'active' class from all items in saved search list
