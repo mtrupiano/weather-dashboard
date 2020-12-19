@@ -27,24 +27,30 @@ $(document).ready(function() {
         event.preventDefault();
         
         var query = $("#search-field").val();
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + query +
+            "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
 
-        var validCity = loadWeatherData(query);
-        if (!validCity) { 
-            return;
-        }
-        
+        $.ajax({ 
+            url: queryURL, 
+            method: "GET", 
+            error: function(ajaxContext) { 
+                console.log("Invalid city identifier")
+            }
+        }).then(function(response) {
+            loadWeatherData(query);
 
-        var capitalizedCityName = query[0].toUpperCase();
-        capitalizedCityName += query.substring(1, query.length);
-        savedCities.push(capitalizedCityName);
-        localStorage.setItem("savedCities", JSON.stringify(savedCities))
+            var capitalizedCityName = query[0].toUpperCase();
+            capitalizedCityName += query.substring(1, query.length);
+            savedCities.push(capitalizedCityName);
+            localStorage.setItem("savedCities", JSON.stringify(savedCities))
 
-        // Add new searched city to list group
-        var newListItem = $("<li>").text(capitalizedCityName);
-        markAllInactive();
-        newListItem.addClass("list-group-item active");
-        $("#search-history-list").prepend(newListItem);
-        
+            // Add new searched city to list group
+            var newListItem = $("<li>").text(capitalizedCityName);
+            markAllInactive();
+            newListItem.addClass("list-group-item active");
+            $("#search-history-list").prepend(newListItem);
+        });
+
         $("#search-field").val(""); // Empty search field
 
     });
@@ -65,16 +71,10 @@ $(document).ready(function() {
 
         var todaysWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + clickedCity +
             "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
-        var success;
         $.ajax({ 
             url: todaysWeatherURL, 
             method: "GET",
-            error: function(ajaxContext) {
-                console.log("Invalid city identifier: " + clickedCity);
-                success = false;
-            }
         }).then(function (response) {
-            success = true;
             var temp = Math.round(parseFloat(response.main.temp) * 10) / 10;
             var humidity = response.main.humidity;
             var windSpeed = response.wind.speed;
@@ -124,8 +124,7 @@ $(document).ready(function() {
             }
 
         });
-        
-        return success;
+
     }
 
     // Removes 'active' class from all items in saved search list
