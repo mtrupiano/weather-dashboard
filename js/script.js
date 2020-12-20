@@ -23,13 +23,14 @@ $(document).ready(function() {
     }
 
     // Event listener for the search button
-    $("#search-btn").click(function(event) {
+    $("#search-form").submit(function(event) {
         event.preventDefault();
         
         var query = $("#search-field").val();
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + query +
             "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
 
+        // Submit an API request just to see if the value in the search box is a valid city identifier
         $.ajax({ 
             url: queryURL, 
             method: "GET", 
@@ -37,6 +38,9 @@ $(document).ready(function() {
                 console.log("Invalid city identifier")
             }
         }).then(function(response) {
+            // If successful, run the actual API requests
+            //      (this technically involves a redundant API request, but I couldn't figure out
+            //       an efficient way to validate the input in the text field)
             loadWeatherData(query);
 
             var capitalizedCityName = query[0].toUpperCase();
