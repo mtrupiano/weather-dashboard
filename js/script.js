@@ -75,10 +75,19 @@ $(document).ready(function() {
 
         var todaysWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + clickedCity +
             "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
+
         $.ajax({ 
             url: todaysWeatherURL, 
             method: "GET",
         }).then(function (response) {
+            var date = moment.unix(response.dt);
+            var month = date.month() + 1;
+            var day = date.date();
+            var year = date.year();
+
+            var dateStr = `${month}/${day}/${year}`;
+            console.log(dateStr);
+
             var temp = Math.round(parseFloat(response.main.temp) * 10) / 10;
             var humidity = response.main.humidity;
             var windSpeed = response.wind.speed;
@@ -98,7 +107,7 @@ $(document).ready(function() {
             $("#weather-icon-main").attr("height", "200");
             $("#weather-icon-main").attr("width", "200");
 
-            $("#city-name-header").text(response.name);
+            $("#city-name-header").text(response.name + " " + dateStr);
             $("#temp").html(temp + "&deg;F");
             $("#humidity").text(humidity + "%");
             $("#wind-speed").text(windSpeed + " mph");
