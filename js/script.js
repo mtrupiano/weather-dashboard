@@ -1,6 +1,6 @@
 $(document).ready(function() {
     
-    // Load list of saved cities
+    // Load list of saved cities from local storage
     var savedCities;
     if (localStorage.getItem("savedCities")) {
         savedCities = JSON.parse(localStorage.getItem("savedCities"));
@@ -22,7 +22,7 @@ $(document).ready(function() {
         }
     }
 
-    // Event listener for the search button
+    // Event listener for the search form submission
     $("#search-form").submit(function(event) {
         event.preventDefault();
         
