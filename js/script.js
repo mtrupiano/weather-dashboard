@@ -81,12 +81,7 @@ $(document).ready(function() {
             method: "GET",
         }).then(function (response) {
             var date = moment.unix(response.dt);
-            var month = date.month() + 1;
-            var day = date.date();
-            var year = date.year();
-
-            var dateStr = `${month}/${day}/${year}`;
-            console.log(dateStr);
+            var dateStr = `${date.month() + 1}/${date.date()}/${date.year()}`;
 
             var temp = Math.round(parseFloat(response.main.temp) * 10) / 10;
             var humidity = response.main.humidity;
@@ -119,6 +114,8 @@ $(document).ready(function() {
         $.ajax({url: forecastURL, method: "GET"}).then(function(response) {
 
             for (var i = 0; i < 5; i++) {
+                var dateRaw = moment.unix(response.list[(i * 8) + 1].dt);
+                var dateStr = `${dateRaw.month() + 1}/${dateRaw.date()}/${dateRaw.year()}`;
                 var temp = Math.round(parseFloat(response.list[i].main.temp) * 10) / 10;
                 var humidity = response.list[i].main.humidity;
                 var iconCode = response.list[i].weather[0].icon;
@@ -128,7 +125,8 @@ $(document).ready(function() {
                 var cardIcon = card.find(".card-icon");
                 var cardTemp = card.find(".card-temp");
                 var cardHumid = card.find(".card-humid");
-                cardTitle.text("");
+                
+                cardTitle.text(dateStr);
                 cardIcon.attr("src", pickIcon(iconCode));
                 cardIcon.attr("height", 50);
                 cardIcon.attr("width", 50);
