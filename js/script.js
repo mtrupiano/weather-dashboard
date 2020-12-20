@@ -95,6 +95,27 @@ $(document).ready(function() {
 
             $.ajax({ url: uvIndexURL, method: "GET"}).then(function(response) {
                 $("#uv-idx").text(response.value);
+                if (response.value < 2) {
+                    // low (green)
+                    $("#uv-idx").removeClass();
+                    $("#uv-idx").addClass("uv-low");
+                } else if (response.value < 6) {
+                    // moderate (yellow)
+                    $("#uv-idx").removeClass();
+                    $("#uv-idx").addClass("uv-moderate");
+                } else if (response.value < 8) {
+                    // high (orange)
+                    $("#uv-idx").removeClass();
+                    $("#uv-idx").addClass("uv-high");
+                } else if (response.value < 11) {
+                    // very high (red) 
+                    $("#uv-idx").removeClass();
+                    $("#uv-idx").addClass("uv-very-high");
+                } else {
+                    // extreme (purple)
+                    $("#uv-idx").removeClass();
+                    $("#uv-idx").addClass("uv-extreme");
+                }
             });
 
             // Populate response data in respective fields

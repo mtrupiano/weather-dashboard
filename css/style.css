@@ -29,3 +29,33 @@ header {
 #forecast-view .col {
     padding: 0 7px;
 }
+
+#uv-idx {
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+.uv-low {
+    color: white;
+    background-color: green;
+}
+
+.uv-moderate {
+    color: black;
+    background-color: yellow;
+}
+
+.uv-high {
+    color: black;
+    background-color: orange;
+}
+
+.uv-very-high {
+    color: black;
+    background-color: red;
+}
+
+.uv-extreme {
+    color: white;
+    background-color: purple;
+}
