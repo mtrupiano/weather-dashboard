@@ -1,7 +1,11 @@
 header {
-    background-color: black;
-    color: white;
+    background-color: rgb(37, 37, 37);
+    color: rgb(221, 221, 221);
     height: 120px;
+}
+
+main {
+    color: rgb(37, 37, 37);
 }
 
 .card-body div {
@@ -30,7 +34,7 @@ header {
     padding: 0 7px;
 }
 
-#uv-idx {
+#uv-index {
     padding: 0 3px;
     border-radius: 3px;
 }

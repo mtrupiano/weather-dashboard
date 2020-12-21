@@ -81,7 +81,7 @@ $(document).ready(function() {
             method: "GET",
         }).then(function (response) {
             var date = moment.unix(response.dt);
-            var dateStr = `${date.month() + 1}/${date.date()}/${date.year()}`;
+            var dateStr = `(${date.month() + 1}/${date.date()}/${date.year()})`;
 
             var temp = Math.round(parseFloat(response.main.temp) * 10) / 10;
             var humidity = response.main.humidity;
@@ -94,27 +94,28 @@ $(document).ready(function() {
                 "&appid=4123b80b67c88531547b1bdd29d80fd3";
 
             $.ajax({ url: uvIndexURL, method: "GET"}).then(function(response) {
-                $("#uv-idx").text(response.value);
+                var uvIdxEl = $("#uv-index");
+                uvIdxEl.text(response.value);
                 if (response.value < 2) {
                     // low (green)
-                    $("#uv-idx").removeClass();
-                    $("#uv-idx").addClass("uv-low");
+                    uvIdxEl.removeClass();
+                    uvIdxEl.addClass("uv-low");
                 } else if (response.value < 6) {
                     // moderate (yellow)
-                    $("#uv-idx").removeClass();
-                    $("#uv-idx").addClass("uv-moderate");
+                    uvIdxEl.removeClass();
+                    uvIdxEl.addClass("uv-moderate");
                 } else if (response.value < 8) {
                     // high (orange)
-                    $("#uv-idx").removeClass();
-                    $("#uv-idx").addClass("uv-high");
+                    uvIdxEl.removeClass();
+                    uvIdxEl.addClass("uv-high");
                 } else if (response.value < 11) {
                     // very high (red) 
-                    $("#uv-idx").removeClass();
-                    $("#uv-idx").addClass("uv-very-high");
+                    uvIdxEl.removeClass();
+                    uvIdxEl.addClass("uv-very-high");
                 } else {
                     // extreme (purple)
-                    $("#uv-idx").removeClass();
-                    $("#uv-idx").addClass("uv-extreme");
+                    uvIdxEl.removeClass();
+                    uvIdxEl.addClass("uv-extreme");
                 }
             });
 
