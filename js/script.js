@@ -10,6 +10,15 @@ $(document).ready(function() {
 
     renderSavedCities();
 
+    var lastViewed;
+    if (localStorage.getItem("lastViewed")) {
+        lastViewed = localStorage.getItem("lastViewed");
+        loadWeatherData(lastViewed);
+        var lastViewedInList = $(`.list-group-item:contains(${lastViewed})`);
+        markAllInactive();
+        lastViewedInList.addClass("active");
+    }
+
     // Draw list of saved cities below search bar
     function renderSavedCities() {
         if (savedCities.length === 0) { return; }
@@ -29,6 +38,8 @@ $(document).ready(function() {
         var query = $("#search-field").val();
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + query +
             "&units=imperial&APPID=4123b80b67c88531547b1bdd29d80fd3";
+
+        localStorage.setItem("lastViewed", query);
 
         // Submit an API request just to see if the value in the search box is a valid city identifier
         $.ajax({ 
@@ -65,6 +76,7 @@ $(document).ready(function() {
 
         // Set clicked list item to 'active'
         var target = $(event.target);
+        localStorage.setItem("lastViewed", target.text());
         markAllInactive();
         target.addClass("active");
         loadWeatherData(target.text());
